@@ -1,5 +1,11 @@
 # SharkHacks3-Submission
 
+## Instructions:
+
+To run, make sure you have Node.js installed. Then run `npm install` in this folder, then `node server.js` to start the server. Then in your browser, go to `localhost:8081` to view the game.
+
+## Hackathon Details
+
 We are back again with another one of your favorite events! Gear up for a fun weekend of hacking, sharks, and more. Whether you are a fan of sharks or the Ikea shark, Blahaj, this hackathon is the perfect time to have fun with your sharky hack ideas!
 We will be running a fun, activity-filled, open-themed digital hackathon. Feel free to hack on whatever you'd like or make it shark-themed for the fun of it. These events are open to all skill levels, from beginners to the most veteran developers.
 We'd love you to build whatever you want to this weekend, don't feel limited by our theme. It's here for inspiration.
