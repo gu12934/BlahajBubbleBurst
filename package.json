@@ -1,0 +1,19 @@
+{
+  "name": "sharkhacks3-submission",
+  "version": "1.0.0",
+  "description": "We are back again with another one of your favorite events! Gear up for a fun weekend of hacking, sharks, and more. Whether you are a fan of sharks or the Ikea shark, Blahaj, this hackathon is the perfect time to have fun with your sharky hack ideas! We will be running a fun, activity-filled, open-themed digital hackathon. Feel free to hack on whatever you'd like or make it shark-themed for the fun of it. These events are open to all skill levels, from beginners to the most veteran developers. We'd love you to build whatever you want to this weekend, don't feel limited by our theme. It's here for inspiration.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gu12934/SharkHacks3-Submission.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gu12934/SharkHacks3-Submission/issues"
+  },
+  "homepage": "https://github.com/gu12934/SharkHacks3-Submission#readme"
+}
