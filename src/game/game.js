@@ -88,11 +88,11 @@ const main = () => {
     if (elementsIntersect(preyEl, sharkEl)) {
       state.score++;
       updateScoreboard();
+      // Kinda glitchy, only works some of the time
+      new Audio(chomp).play();
       preyEl.remove();
       return;
     }
-
-    // if(garbageEls)
 
     for(let garbageEl of garbageEls) {
 			// If shark in range, reduce shark health, remove garbage
