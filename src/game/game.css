@@ -27,3 +27,23 @@ body{
 html.reverse-shark .shark div {
     transform: scaleX(-1);
 }
+
+.garbage {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    width: calc(10px + 20vh);
+    height: calc(10px + 12vh);
+    padding-left: calc(10px + 10vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(16px + 7vh);
+    z-index: 9;
+    isolation: isolate;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease-out;
+}
