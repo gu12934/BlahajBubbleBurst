@@ -1,0 +1,21 @@
+body{
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    /* background-color:#36afdf; */
+    background-image: url("https://t4.ftcdn.net/jpg/04/42/01/23/360_F_442012369_vgTRXY01C4bmd5vLII2u2mkoPhNG2hrH.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-size: 100% 100%;
+}
+
+div{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    height:35px;
+    width:35px;
+    border-radius:50%;
+    border:2px solid black;
+}
+
