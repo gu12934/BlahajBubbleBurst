@@ -1,10 +1,15 @@
 body {
+    
+ 
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    text-align: center;
+    color: rgb(238, 235, 235)
+    
   } 
   
-  main {
+  main {  background: url("Ocean.jpg") no-repeat center center fixed;
     flex: 1 0 auto;
   }
   
@@ -13,6 +18,7 @@ body {
     font-family: 'Architects Daughter', cursive;
     text-transform: uppercase;
     font-weight: 900;
+    text-align: center;
   }
   
   /* start welcome animation */
