@@ -107,8 +107,14 @@ const updateState = (health, time) => {
     showGameOverModalAndUpdateHighScore();
   }
 
-  const scoreboard = document.getElementById("scoreboard");
-  scoreboard.innerText = `Health: ${state.health} Time: ${state.time}`;
+  const healthBar = document.getElementsByClassName('healthBarValue')[0];
+  healthBar.style.width = (state.health * 10) + '%';
+
+  const timer = document.getElementsByClassName('timer')[0];
+  timer.innerText = `Time: ${state.time}`;
+
+  // const scoreboard = document.getElementById("scoreboard");
+  // scoreboard.innerText = `Health: ${state.health} Time: ${state.time}`;
 }
 
 const showGameOverModalAndUpdateHighScore = () => {
