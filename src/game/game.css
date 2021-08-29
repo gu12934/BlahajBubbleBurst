@@ -23,3 +23,7 @@ body{
     font-size: calc(16px + 10vh);
     /* border:2px solid black; */
 }
+
+html.reverse-shark .shark div {
+    transform: scaleX(-1);
+}

@@ -1,3 +1,4 @@
+const chomp = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/436243/aud_chomp.mp3`;
 const htmlEl = document.getElementsByTagName('html')[0];
 let lastX = 0;
 let preyIcons = ['fish.png', 'food.png'];
@@ -22,11 +23,11 @@ const onMouseMove = (e) => {
   shark.style.left = e.pageX + 'px';
   shark.style.top = e.pageY + 'px';
 
-  // reversing, doesn't work right now
-  // if (Math.abs(lastX - e.pageX) < 30) return;
-  // if (e.pageX > lastX) htmlEl.classList.add('reverse-shark');
-  // else htmlEl.classList.remove('reverse-shark');
-  // lastX = e.pageX;
+  // reversing direction
+  if (Math.abs(lastX - e.clientX) < 30) return;
+  if (e.clientX > lastX) shark.style.transform = "scaleX(-1)"
+  else shark.style.transform = "scaleX(1)";
+  lastX = e.clientX;
 }
 
 document.addEventListener('mousemove', onMouseMove);
@@ -51,6 +52,7 @@ const createPrey = (x, y) => {
 };
 
 const elementsIntersect = (elA, elB) => {
+  if(!elA || !elB) return false;
 	const a = elA.getBoundingClientRect();
 	const b = elB.getBoundingClientRect();
 	return (
@@ -63,38 +65,62 @@ const elementsIntersect = (elA, elB) => {
 		);
 };
 
+const updateScoreboard = () => {
+  const scoreboard = document.getElementById("scoreboard");
+  scoreboard.innerText = `Health: ${state.health} Score: ${state.score}`;
+}
+
+const removeGarbage = (garbageEl, eaten = false) => {
+	garbageEl.remove();
+	if (eaten) {
+		new Audio(chomp).play();
+		iterateScore();
+	}
+	if (garbageCount >= 0) garbageCount -= 1;
+};
+
 const main = () => {
-		// const garbageEls = Array.from(document.querySelectorAll('.garbage'));
-		const sharkEl = document.querySelector('.shark');
+		const garbageEls = Array.from(document.querySelectorAll('.garbage'));
+		const sharkEl = document.getElementById('shark');
+    const preyEl = document.getElementById("prey");
 		// const garbageCount = garbageEls.length;
 
-		// garbageEls.forEach(garbageEl => {
-		// 	// If shark in range, reduce shark health, remove garbage
-		// 	if (elementsIntersect(garbageEl, sharkEl)) {
-		// 		removeGarbage(garbageEl, true);
-		// 		return;
-		// 	}
+    if (elementsIntersect(preyEl, sharkEl)) {
+      state.score++;
+      updateScoreboard();
+      preyEl.remove();
+      return;
+    }
 
-		// 	// If outside screen, remove
-		// 	const pos = parseFloat(garbageEl.dataset.left);
-		// 	if (pos > 105 || pos < -5) {
-		// 		removeGarbage(garbageEl);
-		// 		return;
-		// 	}
-		// 	// Otherwise, take step
-		// 	// const speed = parseFloat(garbageEl.dataset.speed);
-		// 	// if (garbageEl.classList.contains('rightward')) garbageEl.dataset.left = pos + speed;
-		// 	// if (garbageEl.classList.contains('leftward')) garbageEl.dataset.left = pos - speed;
-		// });
+    // if(garbageEls)
 
+    for(let garbageEl of garbageEls) {
+			// If shark in range, reduce shark health, remove garbage
+			if(elementsIntersect(garbageEl, sharkEl)) {
+        state.health--;
+        updateScoreboard();
+				removeGarbage(garbageEl, true);
+				return;
+			}
+
+			// If outside screen, remove
+			const pos = parseFloat(garbageEl.dataset.left);
+			if(pos > 105 || pos < -5) {
+				removeGarbage(garbageEl);
+				return;
+			}
+			// Otherwise, take step
+			// const speed = parseFloat(garbageEl.dataset.speed);
+			// if (garbageEl.classList.contains('rightward')) garbageEl.dataset.left = pos + speed;
+			// if (garbageEl.classList.contains('leftward')) garbageEl.dataset.left = pos - speed;
+    }
 
       timeSinceLastSpawn++;
 
       if(timeSinceLastSpawn/4 >= 6) { // 6 seconds have passed
         timeSinceLastSpawn = 0;
         // despawn existing prey
-        const prey = document.getElementById("prey");
-        if(prey) prey.remove();
+        if(preyEl) preyEl.remove();
         // put in new one at random location
         createPrey(randomNumber(0, window.innerWidth), randomNumber(0, window.innerHeight));
       }

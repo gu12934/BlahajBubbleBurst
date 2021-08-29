@@ -61,7 +61,7 @@ let sharkRafTimeout;
 let preyRafTimeout;
 let lastX = 0;
 let score = 0;
-let preyCount = 0;
+let garbageCount = 0;
 let maxPreyCount = 10;
 const maxPreyCountLimit = 50;
 const htmlEl = document.getElementsByTagName('html')[0];
@@ -84,7 +84,7 @@ const removePrey = (preyEl, eaten = false) => {
 		new Audio(chomp).play();
 		iterateScore();
 	}
-	if (preyCount >= 0) preyCount = preyCount - 1;
+	if (garbageCount >= 0) garbageCount = garbageCount - 1;
 };
 
 document.addEventListener('keydown', ({ keyCode, ...rest }) => {
@@ -155,7 +155,7 @@ setInterval(() => {
 	preyRafTimeout = window.requestAnimationFrame(() => {
 		const preyEls = Array.from(document.querySelectorAll('.prey'));
 		const sharkEl = document.querySelector('.shark');
-		preyCount = preyEls.length;
+		garbageCount = preyEls.length;
 
 		preyEls.forEach(preyEl => {
 			// If shark in range, eat
@@ -177,7 +177,7 @@ setInterval(() => {
 			if (preyEl.classList.contains('leftward')) preyEl.dataset.left = pos - speed;
 		});
 
-		if (preyCount < maxPreyCount) {
+		if (garbageCount < maxPreyCount) {
 			const newPrey = document.createElement('div');
 			const direction = Math.random() < 0.5 ? 'leftward' : 'rightward';
 			const { icon, topRange, speedRange, specialType = '' } = randomItem(preyTypes);
@@ -190,7 +190,7 @@ setInterval(() => {
 			newPrey.appendChild(document.createElement('div'));
 			newPrey.firstChild.textContent = finalIcon;
 			document.body.appendChild(newPrey);
-			preyCount = preyCount + 1;
+			garbageCount = garbageCount + 1;
 		}
 	});
 }, 225);
