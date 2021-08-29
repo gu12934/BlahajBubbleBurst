@@ -3,20 +3,21 @@ const preyIcons = ['fish.png', 'food.png'];
 const garbageIcons = ['trashcan.png'];
 const refreshRate = 62.5;
 const maxGarbageCount = 5;
+const maxHealth = 10;
 const initialState = {
-  health: 3,
-  score: 0,
+  // Can be in PLAYING or GAMEOVER
+  globalGameState: 'PLAYING',
+  health: 10,
+  time: 0,
 }
-
-// Can be in PLAYING, PAUSE, GAMEOVER, or START
-let globalGameState = "PLAYING";
 
 let sharkRafTimeout;
 let garbageRafTimeout;
 let lastX = 0;
 let garbageCount = 0;
 let timeSinceLastSpawn = 0;
-let state = initialState;
+let timeSinceLastHealthDecrease = 0;
+let state = JSON.parse(JSON.stringify(initialState)); // weird hack to do deep copy
 
 const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -34,8 +35,6 @@ const onMouseMove = (e) => {
     lastX = e.clientX;  
   });
 }
-
-document.addEventListener('mousemove', onMouseMove);
 
 const createPrey = (x, y) => {
   const newPrey = document.createElement("div");
@@ -92,13 +91,34 @@ const elementsIntersect = (elA, elB) => {
 		);
 };
 
-const updateState = (updateScore) => {
-  if(updateScore) state.score++;
-  else state.health--;
+const restartGame = () => {
+  state = JSON.parse(JSON.stringify(initialState));
+  initializeEventListeners();
+}
 
-  if(state.health === 0) globalGameState = "GAMEOVER";
+const updateState = (health, time) => {
+  state.health += health;
+  state.time += time;
+
+  if(state.health > maxHealth) state.health = maxHealth;
+  if(state.health === 0) {
+    state.globalGameState = "GAMEOVER";
+    removeEventListeners();
+    showGameOverModalAndUpdateHighScore();
+  }
+
   const scoreboard = document.getElementById("scoreboard");
-  scoreboard.innerText = `Health: ${state.health} Score: ${state.score}`;
+  scoreboard.innerText = `Health: ${state.health} Time: ${state.time}`;
+}
+
+const showGameOverModalAndUpdateHighScore = () => {
+  modal.style.display = "block";
+  document.body.style.cursor = "pointer";
+  const modalText = document.getElementById('modal-text');
+
+  if(state.time > localStorage.getItem('highScore')) localStorage.setItem('highScore', state.time);
+  const highScore = localStorage.getItem('highScore');
+  modalText.innerText = `Game over! Time: ${state.time}s, current high score for time: ${highScore ? highScore: 0}s`;
 }
 
 const removeGarbage = (garbageEl, eaten = false) => {
@@ -109,17 +129,55 @@ const removeGarbage = (garbageEl, eaten = false) => {
 	if (garbageCount >= 0) garbageCount -= 1;
 };
 
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+// var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
+const initializeEventListeners = () => {
+  document.addEventListener('mousemove', onMouseMove);
+  // When the user clicks on the button, open the modal
+  // btn.onclick = function() {
+  //   modal.style.display = "block";
+  // }
+
+
+  // When the user clicks anywhere outside of the modal, close it
+  // window.onclick = function(event) {
+  //   if (event.target == modal) {
+  //     modal.style.display = "none";
+  //   }
+  // }
+}
+
+const removeEventListeners = () => {
+  document.removeEventListener('mousemove', onMouseMove);
+}
+
+// When the user clicks on <span> (x) in the modal, close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+  restartGame();
+}
+
 const main = () => {
-  if(globalGameState === 'PLAYING') {
+  if(state.globalGameState === 'PLAYING') {
     if (garbageRafTimeout) window.cancelAnimationFrame(garbageRafTimeout);
     garbageRafTimeout = window.requestAnimationFrame(() => {
+
+      updateState(0, refreshRate/1000);
+
       const garbageEls = Array.from(document.querySelectorAll('.garbage'));
       const sharkEl = document.getElementById('shark');
       const preyEl = document.getElementById("prey");
       garbageCount = garbageEls.length;
   
       if (elementsIntersect(preyEl, sharkEl)) {
-        updateState(true);
+        updateState(5, 0);
         // Kinda glitchy, only works some of the time
         // new Audio(chomp).play();
         preyEl.remove();
@@ -129,7 +187,7 @@ const main = () => {
       for(const garbageEl of garbageEls) {
         // If shark in range, reduce shark health, remove garbage
         if(elementsIntersect(garbageEl, sharkEl)) {
-          updateState(false);
+          updateState(-1, 0);
           removeGarbage(garbageEl, true);
           return;
         }
@@ -155,6 +213,13 @@ const main = () => {
           // put in new one at random location
           createPrey(randomNumber(0, window.innerWidth), randomNumber(0, window.innerHeight));
         }
+
+        timeSinceLastHealthDecrease += refreshRate/1000;
+
+        if(timeSinceLastHealthDecrease >= 4) {
+          timeSinceLastHealthDecrease = 0;
+          updateState(-1, 0);
+        }
   
         if(garbageCount < maxGarbageCount) {
           createGarbage();
@@ -164,6 +229,8 @@ const main = () => {
     });  
   }
 };
+
+initializeEventListeners();
 
 // initial spawn
 createPrey(randomNumber(0, window.innerWidth), randomNumber(0, window.innerHeight));
