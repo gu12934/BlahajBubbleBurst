@@ -1,6 +1,6 @@
 const htmlEl = document.getElementsByTagName('html')[0];
 let lastX = 0;
-let preyIcons = []
+let preyIcons = ['fish.png', 'food.png'];
 
 const maxPray = 4;
 
@@ -32,19 +32,20 @@ const onMouseMove = (e) => {
 document.addEventListener('mousemove', onMouseMove);
 
 const createPrey = (x, y) => {
-  // const preyImage = 
-
   const newPrey = document.createElement("div");
   newPrey.setAttribute("id", "prey");
   newPrey.style.position = "absolute";
   newPrey.style.left = x + 'px';
   newPrey.style.top = y + 'px';
+  newPrey.style.display = "flex";
 
-  const bubble = document.createElement("img");
-  bubble.src = "./assets/bubble.png";
-  bubble.height = 0.1 * bubble.height;
-  bubble.width = 0.1 * bubble.width;
-  newPrey.appendChild(bubble);
+  const preyImageName = preyIcons[randomNumber(0, preyIcons.length-1)];
+  const preyImage = document.createElement("img");
+  preyImage.src = `./assets/prey/${preyImageName}`;
+  preyImage.height = 0.1 * preyImage.height;
+  preyImage.width = 0.1 * preyImage.width;
+  newPrey.append(preyImage);
+
 
   document.getElementById('body').appendChild(newPrey);
 };
@@ -93,7 +94,7 @@ const main = () => {
         timeSinceLastSpawn = 0;
         // despawn existing prey
         const prey = document.getElementById("prey");
-        prey.remove();
+        if(prey) prey.remove();
         // put in new one at random location
         createPrey(randomNumber(0, window.innerWidth), randomNumber(0, window.innerHeight));
       }
