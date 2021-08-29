@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <!-- <script src="/socket.io/socket.io.js"></script> -->
-        <script src="./game.js"></script> <!-- main js file for game logic -->
-        <svg width="200" height="100" viewBox="0 0 200 100" preserveAspectRatio="none">
-            <defs>
-              <path id="wave" fill="#ccf2ff" d="M0 50 C 40 10, 60 10, 100 50 C 140 90, 160 90, 200 50 C 240 10, 260 10, 300 50 C 340 90, 360 90, 400 50 L 400 100 L 0 100 Z" />
-            </defs>
-            <use xlink:href="#wave" x="0" y="0">
-              <animate attributeName="x" from="-200" to="0" dur="3s" repeatCount="indefinite"/>
-            </use>
-          </svg>
-          <div class="sand"></div>
-          <p class="score" title="Score">0</p>
-          <div class="shark"><div><div>🦈</div></div></div>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlahajBubbleBurst</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://bit.ly/3DtY8aQ">
+</head>
+<body >
+  <img src="https://bit.ly/3kvMDHf" style="display: none;" rel="preload">
+
+  <div class="devpost-btn">
+    <a href="https://devpost.com/software/BlahajBubbleBurst">
+    <img width="57px" height="50px" src="https://bit.ly/3j1qW25" alt="devpost logo">
+    </a>
+  </div>
+
+  <!-- <div class="rukozara"> -->
+  <svg class="spinner" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+    <rect class="spinner__rect" x="0" y="0" width="100" height="100" fill="none"></rect>
+    <circle class="spinner__circle" cx="50" cy="50" r="35" stroke="#fff" fill="none" stroke-width="6" stroke-linecap="round">
+    </circle>
+  </svg>
+  <!-- </div> -->
+
+  <script type="text/javascript">  setTimeout(function () {window.location.href = "../src/game/game.html"; }, 10000); </script> 
+
+  </body>
 </html>
