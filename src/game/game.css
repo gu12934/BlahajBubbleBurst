@@ -10,12 +10,17 @@ body{
     background-size: 100% 100%;
 }
 
-div{
+* {
+    cursor: none;
+}
+
+#shark {
     position:absolute;
     transform:translate(-50%,-50%);
-    height:35px;
-    width:35px;
+    width: calc(10px + 12vh);
+    height: calc(10px + 12vh);
     border-radius:50%;
-    border:2px solid black;
+    font-size: calc(16px + 10vh);
+    /* border:2px solid black; */
 }
 
